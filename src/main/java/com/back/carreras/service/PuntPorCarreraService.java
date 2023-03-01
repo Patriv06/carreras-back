@@ -5,6 +5,7 @@ import com.back.carreras.model.PuntPorCarrera;
 import com.back.carreras.repository.PuntPorCarreraRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,9 @@ public class PuntPorCarreraService implements IPuntPorCarreraService {
 
     @Override
     public List<PuntPorCarrera> verPuntPorCarrera() {
-        return ppcarrRepo.findAll();
+        Sort sortOrder  = Sort.by("puestoPPCarrera").descending();
+        
+        return ppcarrRepo.findAll(sortOrder);
     }
 
     @Override
