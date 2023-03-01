@@ -7,6 +7,7 @@ import com.back.carreras.model.Categorias;
 import com.back.carreras.repository.CategoriasRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +17,8 @@ public class CategoriasService implements ICategoriasService{
 
     @Override
     public List<Categorias> verCategorias() {
-        return catRepo.findAll();
+         Sort sortOrder = Sort.by("idCat").descending(); 
+        return catRepo.findAll(sortOrder);
       
     }
 
