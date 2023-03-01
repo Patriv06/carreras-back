@@ -17,7 +17,8 @@ public class CategoriasService implements ICategoriasService{
 
     @Override
     public List<Categorias> verCategorias() {
-         Sort sortOrder = Sort.by("idCat").descending(); 
+         Sort sortOrder; 
+         sortOrder = Sort.by("idCat").ascending();
         return catRepo.findAll(sortOrder);
       
     }
