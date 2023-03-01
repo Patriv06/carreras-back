@@ -43,7 +43,8 @@ public class Carreras implements Serializable {
     public Carreras() {
     }
 
-    public Carreras(String temporadaCarrera, int cantPilCarrera, int multiplCarrera, Date fechaCarrera, Autodromo autodromo, Categorias categorias) {
+    public Carreras(Long idCarreras, String temporadaCarrera, int cantPilCarrera, int multiplCarrera, Date fechaCarrera, Autodromo autodromo, Categorias categorias) {
+        this.idCarreras = idCarreras;
         this.temporadaCarrera = temporadaCarrera;
         this.cantPilCarrera = cantPilCarrera;
         this.multiplCarrera = multiplCarrera;
@@ -51,6 +52,8 @@ public class Carreras implements Serializable {
         this.autodromo = autodromo;
         this.categorias = categorias;
     }
+
+    
 
     
 
