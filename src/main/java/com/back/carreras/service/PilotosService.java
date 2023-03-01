@@ -15,7 +15,9 @@ public class PilotosService implements IPilotosService{
 
     @Override
     public List<Pilotos> verPilotos() {
-        return pilotRepo.findAll();
+        Sort sortOrder  = Sort.by("idPiloto").descending();
+       
+        return pilotRepo.findAll(sortOrder);
     }
 
     @Override
