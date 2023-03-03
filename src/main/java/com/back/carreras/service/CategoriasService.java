@@ -15,10 +15,17 @@ public class CategoriasService implements ICategoriasService{
      @Autowired
        public CategoriasRepository catRepo;
 
-    @Override
+   // @Override
+  //  public List<Categorias> verCategorias() {
+  //       Sort sortOrder  = Sort.by("idCat").descending();
+  //      return catRepo.findAll(sortOrder);
+      
+ //   }
+    
+     @Override
     public List<Categorias> verCategorias() {
-         Sort sortOrder  = Sort.by("idCat").descending();
-        return catRepo.findAll(sortOrder);
+        
+        return catRepo.findAll();
       
     }
 
