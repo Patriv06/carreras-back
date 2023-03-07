@@ -26,7 +26,7 @@ public class ImageModel {
 
 	@Id
 	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	
@@ -37,7 +37,7 @@ public class ImageModel {
 
     //image bytes can have large lengths so we specify a value
     //which is more than the default length for picByte column
-	//@Column(name = "picByte", length = 1000)
+	@Column(name = "picByte", length = 50000000)
 	private byte[] picByte;
 
 	public String getName() {
