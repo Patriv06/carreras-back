@@ -35,16 +35,21 @@ public class ImageUploadController {
 	ImageRepository imageRepository;
 
 	@PostMapping("/upload")
+        @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+
 	public BodyBuilder uplaodImage(@RequestParam("imageFile") MultipartFile file) throws IOException {
 
 		System.out.println("Original Image Byte Size - " + file.getBytes().length);
 		ImageModel img = new ImageModel(file.getOriginalFilename(), file.getContentType(),
 				compressBytes(file.getBytes()));
-		imageRepository.save(img);
+		//imageRepository.save(img);
+                imageRepository.save(img);
 		return ResponseEntity.status(HttpStatus.OK);
 	}
 
 	@GetMapping(path = { "/get/{imageName}" })
+        @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+
 	public ImageModel getImage(@PathVariable("imageName") String imageName) throws IOException {
 
 		final Optional<ImageModel> retrievedImage = imageRepository.findByName(imageName);
