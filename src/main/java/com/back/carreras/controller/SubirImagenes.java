@@ -5,6 +5,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +23,8 @@ public class SubirImagenes {
         System.out.println(file.getSize());
 
   
-   String  Path_Directory="\\src\\main\\resources\\src\\image";
+   String  Path_Directory=new ClassPathResource("static/image/").getFile().getAbsolutePath();
+   System.out.println(Path_Directory);
      Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         return "se subió bien";
 
