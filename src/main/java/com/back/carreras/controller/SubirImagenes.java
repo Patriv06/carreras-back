@@ -33,16 +33,20 @@ public class SubirImagenes {
     File carpeta = new File(directorioRaiz);
     if (carpeta.exists()) {
         File[] ficheros = carpeta.listFiles(); //Listar archivos en carpeta raiz
-        for (File f : ficheros) {
+       for (File f : ficheros) {
             System.out.println(f.getName());
-        }
+       }
     } else {
 
-    }
+   }
+    
+
 
   // String  Path_Directory="\\src\\main\\resources\\static\\image\\";
   //   Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
-  //      return "se subió bien";
+      return "se subió bien";
 
    
-    
+}
+
+}  
