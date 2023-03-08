@@ -4,6 +4,7 @@ package com.back.carreras.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import org.springframework.core.io.ByteArrayResource;
@@ -23,26 +24,34 @@ import org.springframework.web.multipart.MultipartFile;
 public class SubirImagenes {
     @PostMapping("/upload-file")
             @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
-    public String uploadImage(@RequestParam("file") MultipartFile file)throws Exception{
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getName());
-        System.out.println(file.getContentType());
-        System.out.println(file.getSize());
-
- 
-
-   
     
-
-
-   String  Path_Directory="/src/main/resources/static/image";
-    Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
-     
     
-    return "se subió bien";
-
-   
-}
+              public String uploadImage(@RequestParam("imageFile") MultipartFile file) {
+          
+                  try {
+                      // Obtenemos la ruta donde se almacenará la imagen
+                      String uploadDir = "/src/main/resources/static/image";
+          
+                      // Obtenemos el nombre de la imagen
+                      String fileName = file.getOriginalFilename();
+          
+                      // Creamos el archivo en la ruta especificada
+                      File uploadPath = new File(uploadDir);
+                      if (!uploadPath.exists()) {
+                          uploadPath.mkdirs();
+                      }
+          
+                      // Guardamos la imagen en el servidor
+                      Path filePath = Paths.get(uploadDir + File.separator + fileName);
+                      Files.write(filePath, file.getBytes());
+          
+                      return "Imagen cargada correctamente";
+                  } catch (IOException e) {
+                      e.printStackTrace();
+                      return "Error al cargar la imagen";
+                  }
+              }
+          
 @GetMapping("/imagen/{nombreArchivo}")
 public ResponseEntity<ByteArrayResource> obtenerImagen(@PathVariable String nombreArchivo) throws IOException {
     String rutaImagen = "/src/main/resources/static/image/" + nombreArchivo; // Cambia esto por la ruta completa en tu servidor
