@@ -22,7 +22,7 @@ public class SubirImagenes {
         System.out.println(file.getSize());
 
   
-   String  Path_Directory="\\src\\main\\resources\\static\\image";
+   String  Path_Directory="\\src\\main\\resources\\static\\image\\";
      Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         return "se subió bien";
 
