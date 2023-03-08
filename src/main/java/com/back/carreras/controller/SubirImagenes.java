@@ -23,7 +23,7 @@ public class SubirImagenes {
         System.out.println(file.getSize());
 
   
-   String  Path_Directory=new ClassPathResource("static/image/").getFile().getAbsolutePath();
+   String  Path_Directory=new ClassPathResource("templates/").getFile().getAbsolutePath();
   
      Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         return "se subió bien"+Path_Directory;
