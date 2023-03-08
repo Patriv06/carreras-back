@@ -26,7 +26,7 @@ public class SubirImagenes {
    String  Path_Directory=new ClassPathResource("static/image/").getFile().getAbsolutePath();
   
      Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
-        return "se subió bien";
+        return "se subió bien"+Path_Directory;
 
     }
     
