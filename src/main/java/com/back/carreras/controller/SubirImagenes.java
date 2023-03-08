@@ -53,6 +53,8 @@ public class SubirImagenes {
         } catch (IOException e) {
             return "Error al cargar la imagen";
         }
+        //solo para borrar las imagenes
+        
     }
 
     @GetMapping("/imagen/{nombreArchivo}")
