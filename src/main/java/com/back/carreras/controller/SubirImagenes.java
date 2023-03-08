@@ -64,8 +64,7 @@ public class SubirImagenes {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-  // headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+   headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         byte[] imagenBytes = Files.readAllBytes(archivo.toPath());
         ByteArrayResource recurso = new ByteArrayResource(imagenBytes);
         return ResponseEntity.ok()
