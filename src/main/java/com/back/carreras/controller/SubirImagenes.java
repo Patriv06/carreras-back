@@ -30,23 +30,7 @@ public class SubirImagenes {
    String  Path_Directory="//src//main//resources//static//image";
     Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
      
-    // String directorioRaiz = System.getProperty("user.dir");
-    String directorioRaiz = "//src//main//resources//static//image";
-    System.out.println("Directorio de trabajo = " + directorioRaiz);
-
-    //archivos(directorioRaiz);
-
-
-
-    File carpeta = new File(directorioRaiz);
-    if (carpeta.exists()) {
-        File[] ficheros = carpeta.listFiles(); //Listar archivos en carpeta raiz
-       for (File f : ficheros) {
-            System.out.println(f.getName());
-       }
-    } else {
-
-   }
+    
     return "se subió bien";
 
    
