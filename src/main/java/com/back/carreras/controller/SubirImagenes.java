@@ -30,7 +30,8 @@ public class SubirImagenes {
    String  Path_Directory="//src//main//resources//static//image";
     Files.copy(file.getInputStream(), Paths.get(Path_Directory+File.separator+file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
      
-     String directorioRaiz = System.getProperty("user.dir");
+    // String directorioRaiz = System.getProperty("user.dir");
+    String directorioRaiz = "//src//main//resources//static//image";
     System.out.println("Directorio de trabajo = " + directorioRaiz);
 
     //archivos(directorioRaiz);
