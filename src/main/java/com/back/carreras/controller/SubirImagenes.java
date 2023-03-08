@@ -26,14 +26,14 @@ public class SubirImagenes {
             @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
     
     
-              public String uploadImage(@RequestParam("imageFile") MultipartFile file) {
+              public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
           
                   try {
                       // Obtenemos la ruta donde se almacenará la imagen
                       String uploadDir = "/src/main/resources/static/image";
           
                       // Obtenemos el nombre de la imagen
-                      String fileName = file.getOriginalFilename();
+                      String fileName = imageFile.getOriginalFilename();
           
                       // Creamos el archivo en la ruta especificada
                       File uploadPath = new File(uploadDir);
@@ -43,11 +43,10 @@ public class SubirImagenes {
           
                       // Guardamos la imagen en el servidor
                       Path filePath = Paths.get(uploadDir + File.separator + fileName);
-                      Files.write(filePath, file.getBytes());
+                      Files.write(filePath, imageFile.getBytes());
           
                       return "Imagen cargada correctamente";
                   } catch (IOException e) {
-                      e.printStackTrace();
                       return "Error al cargar la imagen";
                   }
               }
