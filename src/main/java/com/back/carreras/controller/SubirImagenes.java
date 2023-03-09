@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
 import javax.servlet.ServletContext;
-import lombok.Value;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +37,7 @@ public class SubirImagenes {
             String uploadDir = servletContext.getRealPath("/") + "image";
 
             // Obtenemos el nombre de la imagen
+            System.out.println(uploadDir);
             String fileName = imageFile.getOriginalFilename();
 
             // Creamos el archivo en la ruta especificada
