@@ -3,18 +3,23 @@ package com.back.carreras.controller;
 
 import com.back.carreras.model.ImageModel;
 import com.back.carreras.repository.ImageRepository;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+import javax.imageio.ImageIO;
+import net.coobird.thumbnailator.Thumbnails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,36 +35,42 @@ import org.springframework.web.multipart.MultipartFile;
      @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
 
 
-@RequestMapping("/image")
+
 public class ImageUploadController {
 
 	@Autowired
 	private ImageRepository imageRepository;
 
-	@PostMapping("/upload")
+	@PostMapping("image//upload")
         @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+ public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    String fileType = file.getContentType();
+    byte[] fileData = compressImage(file.getBytes());
 
-	public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
-		try {
-			ImageModel imageModel = new ImageModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
-			imageRepository.save(imageModel);
-			return ResponseEntity.ok().body("Imagen subida correctamente.");
-		} catch (IOException e) {
-			e.printStackTrace();
-			return ResponseEntity.badRequest().body("Error al subir la imagen.");
-		}
-	}
-        @GetMapping("/{name}")
-             @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+    ImageModel model = new ImageModel(fileName, fileType, fileData);
+    imageRepository.save(model);
 
-public ResponseEntity<byte[]> getImageByName(@PathVariable String name) {
-    Optional<ImageModel> imageModelOptional = imageRepository.findByName(name);
-    if (imageModelOptional.isPresent()) {
-        ImageModel imageModel = imageModelOptional.get();
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(imageModel.getType())).body(imageModel.getPicByte());
+    return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
+  }
+
+  @GetMapping("/image/{imageName}")
+  public ResponseEntity<byte[]> getImage(@PathVariable String imageName) {
+    Optional<ImageModel> model = imageRepository.findByName(imageName);
+    if (model.isPresent()) {
+      return ResponseEntity.ok().contentType(MediaType.valueOf(model.get().getType())).body(model.get().getPicByte());
     } else {
-        return ResponseEntity.notFound().build();
+      return ResponseEntity.notFound().build();
     }
-}
-        
+  }
+
+  private byte[] compressImage(byte[] imageData) throws IOException {
+    ByteArrayInputStream bis = new ByteArrayInputStream(imageData);
+    BufferedImage image = ImageIO.read(bis);
+
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    Thumbnails.of(image).size(1024, 1024).outputQuality(0.5).toOutputStream(bos);
+
+    return bos.toByteArray();
+  }
 }
