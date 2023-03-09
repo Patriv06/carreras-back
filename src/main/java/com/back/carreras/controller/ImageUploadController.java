@@ -51,7 +51,7 @@ public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) t
 
     // Comprimir la imagen
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    ImageIO.write(originalImage, "jpg", os);
+    ImageIO.write(originalImage, "png", os);
     byte[] compressedImage = os.toByteArray();
     os.close();
 
