@@ -57,7 +57,7 @@ public class SubirImagenes {
         
     }
 
- @GetMapping("/imagen/{nombreArchivo}")
+ @GetMapping("/image/{nombreArchivo}")
 @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
 public ResponseEntity<ByteArrayResource> obtenerImagen(@PathVariable String nombreArchivo) throws IOException {
     String rutaImagen = "/src/main/resources/static/image/" + nombreArchivo; // Cambia esto por la ruta completa en tu servidor
