@@ -57,23 +57,26 @@ public class SubirImagenes {
         
     }
 
-    @GetMapping("/imagen/{nombreArchivo}")
-    @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
-    public ResponseEntity<ByteArrayResource> obtenerImagen(@PathVariable String nombreArchivo) throws IOException {
-        String rutaImagen = servletContext.getRealPath("/") + "image/" + nombreArchivo;
-        File archivo = new File(rutaImagen);
-        if (!archivo.exists()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        HttpHeaders headers = new HttpHeaders();
-   headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        byte[] imagenBytes = Files.readAllBytes(archivo.toPath());
-        ByteArrayResource recurso = new ByteArrayResource(imagenBytes);
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(imagenBytes.length)
-                .body(recurso);
+ @GetMapping("/imagen/{nombreArchivo}")
+@CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+public ResponseEntity<ByteArrayResource> obtenerImagen(@PathVariable String nombreArchivo) throws IOException {
+    String rutaImagen = "/src/main/resources/static/image/" + nombreArchivo; // Cambia esto por la ruta completa en tu servidor
+    File archivo = new File(rutaImagen);
+    if (!archivo.exists()) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.IMAGE_JPEG);
+    headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    headers.add("Access-Control-Allow-Credentials", "true");
+    byte[] imagenBytes = Files.readAllBytes(archivo.toPath());
+    ByteArrayResource recurso = new ByteArrayResource(imagenBytes);
+    return ResponseEntity.ok()
+            .headers(headers)
+            .contentLength(imagenBytes.length)
+            .body(recurso);
+}
 }
 
 
