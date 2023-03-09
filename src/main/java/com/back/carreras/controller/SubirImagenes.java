@@ -29,36 +29,35 @@ public class SubirImagenes {
     @Autowired
     private ServletContext servletContext;
 
-    @PostMapping("/image/upload-file")
-    @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
-    public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
-        try {
-            // Obtenemos la ruta donde se almacenará la imagen
-            String uploadDir = servletContext.getRealPath("/") + "image";
+   @PostMapping("/image/upload-file")
+@CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
+    try {
+        // Obtenemos la ruta donde se almacenará y se recuperará la imagen
+        String uploadDir = "/src/main/resources/static/image";
 
-            // Obtenemos el nombre de la imagen
-            System.out.println(uploadDir);
-            String fileName = imageFile.getOriginalFilename();
+        // Obtenemos el nombre de la imagen
+        System.out.println(uploadDir);
+        String fileName = imageFile.getOriginalFilename();
 
-            // Creamos el archivo en la ruta especificada
-            File uploadPath = new File(uploadDir);
-            if (!uploadPath.exists()) {
-                uploadPath.mkdirs();
-            }
-
-            // Guardamos la imagen en el servidor
-            Path filePath = Paths.get(uploadDir + File.separator + fileName);
-            Files.write(filePath, imageFile.getBytes());
-
-            return "Imagen cargada correctamente";
-        } catch (IOException e) {
-            return "Error al cargar la imagen";
+        // Creamos el archivo en la ruta especificada
+        File uploadPath = new File(uploadDir);
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs();
         }
-        //solo para borrar las imagenes
-        
-    }
 
- @GetMapping("/image/{nombreArchivo}")
+        // Guardamos la imagen en el servidor
+        Path filePath = Paths.get(uploadDir + File.separator + fileName);
+        Files.write(filePath, imageFile.getBytes());
+
+        return "Imagen cargada correctamente";
+    } catch (IOException e) {
+        return "Error al cargar la imagen";
+    }
+    //solo para borrar las imagenes
+}
+
+@GetMapping("/image/{nombreArchivo}")
 @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
 public ResponseEntity<ByteArrayResource> obtenerImagen(@PathVariable String nombreArchivo) throws IOException {
     String rutaImagen = "/src/main/resources/static/image/" + nombreArchivo; // Cambia esto por la ruta completa en tu servidor
@@ -78,6 +77,7 @@ public ResponseEntity<ByteArrayResource> obtenerImagen(@PathVariable String nomb
             .contentLength(imagenBytes.length)
             .body(recurso);
 }
+
 }
 
 
