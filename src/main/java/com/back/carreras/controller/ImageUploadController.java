@@ -41,7 +41,7 @@ public class ImageUploadController {
 	@Autowired
 	private ImageRepository imageRepository;
 
-	@PostMapping("image/upload")
+	@PostMapping("/image/upload")
         @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
  public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
     String fileName = StringUtils.cleanPath(file.getOriginalFilename());
