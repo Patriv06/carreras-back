@@ -29,7 +29,7 @@ public class SubirImagenes {
     @Autowired
     private ServletContext servletContext;
 
-    @PostMapping("/upload-file")
+    @PostMapping("/image/upload-file")
     @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
     public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
         try {
