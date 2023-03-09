@@ -61,7 +61,7 @@ public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) t
     return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
 }
 
-  @GetMapping("/image/{imageName}")
+  @GetMapping("/imagenes/{imageName}")
           @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
 
   public static String getImageFormat(byte[] imageBytes) throws IOException {
