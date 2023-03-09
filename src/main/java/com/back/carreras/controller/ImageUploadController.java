@@ -37,6 +37,8 @@ public class ImageUploadController {
 	private ImageRepository imageRepository;
 
 	@PostMapping("/upload")
+        @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+
 	public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
 		try {
 			ImageModel imageModel = new ImageModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
@@ -48,6 +50,8 @@ public class ImageUploadController {
 		}
 	}
         @GetMapping("/{name}")
+             @CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+
 public ResponseEntity<byte[]> getImageByName(@PathVariable String name) {
     Optional<ImageModel> imageModelOptional = imageRepository.findByName(name);
     if (imageModelOptional.isPresent()) {
