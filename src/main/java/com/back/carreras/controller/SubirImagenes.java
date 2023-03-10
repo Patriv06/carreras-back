@@ -70,7 +70,7 @@ public class SubirImagenes {
              ImageModel image = optionalImage.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found"));
              return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image.getPicByte());
 }
-       @DeleteMapping("/{name}")
+       @DeleteMapping("/delete/{name}")
        public ResponseEntity<String> deleteImageByName(@PathVariable String name) {
               Optional<ImageModel> imageModel = imageRepository.findByName(name);
               if(imageModel.isPresent()) {
