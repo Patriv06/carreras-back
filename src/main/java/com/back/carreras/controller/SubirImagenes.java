@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,5 +70,14 @@ public class SubirImagenes {
              ImageModel image = optionalImage.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found"));
              return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image.getPicByte());
 }
-
+       @DeleteMapping("/{name}")
+       public ResponseEntity<String> deleteImageByName(@PathVariable String name) {
+              Optional<ImageModel> imageModel = imageRepository.findByName(name);
+              if(imageModel.isPresent()) {
+              imageRepository.delete(imageModel.get());
+              return ResponseEntity.ok("Imagen eliminada con éxito");
+               } else {
+                return ResponseEntity.notFound().build();
+                      }
+        }
 }
