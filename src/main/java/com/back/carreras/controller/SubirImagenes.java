@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 
 
@@ -62,5 +63,11 @@ public class SubirImagenes {
 		List<ImageModel> imageModels = imageRepository.findAll();
 		return ResponseEntity.ok(imageModels);
 	}
+        @GetMapping("/getImageByName/{name}")
+        public ResponseEntity<byte[]> getImageByName(@PathVariable String name) {
+             Optional<ImageModel> optionalImage = imageRepository.findByName(name);
+             ImageModel image = optionalImage.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found"));
+             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image.getPicByte());
+}
 
 }
