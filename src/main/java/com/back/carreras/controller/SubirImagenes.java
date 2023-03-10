@@ -1,16 +1,18 @@
 
 package com.back.carreras.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.back.carreras.model.ImageModel;
+import com.back.carreras.repository.ImageRepository;
 
-import javax.servlet.ServletContext;
+import java.io.IOException;
+
+import java.util.List;
+import java.util.Optional;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,65 +21,46 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
+
+
 @RestController
+@RequestMapping("/api/image")
+@CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
+
 public class SubirImagenes {
+	
+	@Autowired
+	private ImageRepository imageRepository;
+	
+	@PostMapping("/upload")
+	public ResponseEntity<String> uploadImage(@RequestParam("imageFile") MultipartFile file) throws IOException {
+		ImageModel imageModel = new ImageModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+		imageRepository.save(imageModel);
+		return ResponseEntity.ok("Imagen subida con éxito");
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+		Optional<ImageModel> imageModel = imageRepository.findById(id);
+		if(imageModel.isPresent()) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.valueOf(imageModel.get().getType()));
+			return new ResponseEntity<>(imageModel.get().getPicByte(), headers, HttpStatus.OK);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-    @Autowired
-    private ServletContext servletContext;
-
-   @PostMapping("/image/upload-file")
-@CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
-public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) {
-    try {
-        // Obtenemos la ruta donde se almacenará y se recuperará la imagen
-        String uploadDir = "/src/main/resources/static/image";
-
-        // Obtenemos el nombre de la imagen
-        System.out.println(uploadDir);
-        String fileName = imageFile.getOriginalFilename();
-
-        // Creamos el archivo en la ruta especificada
-        File uploadPath = new File(uploadDir);
-        if (!uploadPath.exists()) {
-            uploadPath.mkdirs();
-        }
-
-        // Guardamos la imagen en el servidor
-        Path filePath = Paths.get(uploadDir + File.separator + fileName);
-        Files.write(filePath, imageFile.getBytes());
-
-        return "Imagen cargada correctamente";
-    } catch (IOException e) {
-        return "Error al cargar la imagen";
-    }
-    //solo para borrar las imagenes
-}
-
-@GetMapping("/image/{nombreArchivo}")
-@CrossOrigin(origins={"https://rankingpilotos.web.app","http://localhost:4200","https://ranking-backoffice.web.app", "https://carreras-app-aoh3.vercel.app/"} )
-public ResponseEntity<ByteArrayResource> obtenerImagen(@PathVariable String nombreArchivo) throws IOException {
-    String rutaImagen = "/src/main/resources/static/image/" + nombreArchivo; // Cambia esto por la ruta completa en tu servidor
-    File archivo = new File(rutaImagen);
-    if (!archivo.exists()) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.IMAGE_JPEG);
-    headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    headers.add("Access-Control-Allow-Credentials", "true");
-    byte[] imagenBytes = Files.readAllBytes(archivo.toPath());
-    ByteArrayResource recurso = new ByteArrayResource(imagenBytes);
-    return ResponseEntity.ok()
-            .headers(headers)
-            .contentLength(imagenBytes.length)
-            .body(recurso);
-}
+	@GetMapping("/")
+	public ResponseEntity<List<ImageModel>> getAllImages() {
+		List<ImageModel> imageModels = imageRepository.findAll();
+		return ResponseEntity.ok(imageModels);
+	}
 
 }
-
-
